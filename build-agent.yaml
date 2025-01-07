@@ -7,6 +7,13 @@ spec:
   containers:
     - name: maven
       image: maven:alpine
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
       command:
         - cat
       tty: true
@@ -15,6 +22,13 @@ spec:
           mountPath: /root/.m2/
     - name: docker-tools
       image: rmkanda/docker-tools:latest
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
       command:
         - cat
       tty: true
@@ -25,17 +39,38 @@ spec:
           name: trivycache
     - name: trufflehog
       image: rmkanda/trufflehog
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
       command:
         - cat
       tty: true
     - name: licensefinder
       image: licensefinder/license_finder
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
       command:
         - cat
       tty: true
     - name: kaniko
       image: gcr.io/kaniko-project/executor:v1.6.0-debug
       imagePullPolicy: Always
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
       env:
         - name: container
           value: docker
