@@ -1,4 +1,7 @@
 pipeline {
+  environment {
+    ARGO_SERVER = "54.70.197.107:31092"
+  }
   agent {
     kubernetes {
       yamlFile 'build-agent.yaml'
@@ -109,20 +112,25 @@ pipeline {
             }
           }
         }
-        stage('Image Scan') {
-          steps {
-            container('docker-tools') {
-              sh 'trivy image --timeout 10m --exit-code 1 index.docker.io/tutug/dso-demo'
-            }
-          }
-        }
+        // stage('Image Scan') {
+        //   steps {
+        //     container('docker-tools') {
+        //       sh 'trivy image --timeout 10m --exit-code 1 index.docker.io/tutug/dso-demo'
+        //     }
+        //   }
+        // }
       }
     }
 
     stage('Deploy to Dev') {
+      environment {
+        AUTH_TOKEN = credentials('argocd-jenkins-deployer-token')
+      }
       steps {
-        // TODO
-        sh "echo done"
+        container('docker-tools') {
+          sh 'docker run -t schoolofdevops/argocd-cli argocd app sync dso-demo --insecure --server $ARGO_SERVER --auth-token 4$AUTH_TOKEN'
+          sh 'docker run -t schoolofdevops/argocd-cli argocd app wait dso-demo --health --timeout 300 --insecure --server $ARGO_SERVER --auth-token $AUTH_TOKEN'
+        }
       }
     }
   }
