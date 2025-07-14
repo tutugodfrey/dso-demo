@@ -113,13 +113,13 @@ pipeline {
             }
           }
         }
-        // stage('Image Scan') {
-        //   steps {
-        //     container('docker-tools') {
-        //       sh 'trivy image --timeout 10m --exit-code 1 index.docker.io/tutug/dso-demo'
-        //     }
-        //   }
-        // }
+        stage('Image Scan') {
+          steps {
+            container('docker-tools') {
+              sh 'trivy image --timeout 10m --exit-code 1 index.docker.io/tutug/dso-demo'
+            }
+          }
+        }
       }
     }
 
