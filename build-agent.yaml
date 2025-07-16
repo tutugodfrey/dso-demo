@@ -20,6 +20,19 @@ spec:
       volumeMounts:
         - name: m2
           mountPath: /root/.m2/
+    - name: argocd-cli
+      image: schoolofdevops/argocd-cli
+      resources:
+        # limits:
+        #   cpu: 500m
+        #   memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      command:
+        - cat
+      tty: true
+
     - name: docker-tools
       image: rmkanda/docker-tools:latest
       resources:
