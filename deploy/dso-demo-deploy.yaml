@@ -17,6 +17,8 @@ spec:
       labels:
         app: dso-demo
     spec:
+      serviceAccountName: dso-demo
+      automountServiceAccountToken: false
       containers:
       - image: index.docker.io/tutug/dso-demo
         name: dso-demo
